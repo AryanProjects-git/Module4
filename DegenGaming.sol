@@ -27,6 +27,7 @@ contract Degen_Gaming{
     //Mapping the address with their respective balance and NFT with the reward
     mapping(address => uint256) private balance;
     mapping(uint256 => NFT) public Reward;
+    mapping(address => string[]) public redeemedItems;
     
     struct NFT {
         string name;
@@ -67,9 +68,13 @@ contract Degen_Gaming{
         if(reward_ID != 0 && reward_ID != 1 && reward_ID != 2){
         revert("Invalid reward ID");
     }
+        redeemedItems[msg.sender].push(Reward[reward_ID].name);
         balance[msg.sender]= balance[msg.sender]-Reward[reward_ID].price;
         return Reward[reward_ID].name;
     }
 
+     function getRedeemedItems(address user) external view returns (string[] memory) {
+        return redeemedItems[user];
+    }
 
 }
